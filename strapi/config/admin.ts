@@ -42,30 +42,7 @@ export default ({ env }) => {
       promoteEE: env.bool('FLAG_PROMOTE_EE', true),
     },
     preview: {
-      enabled: true,
-      config: {
-        allowedOrigins: [clientUrl],
-        async handler(uid, { documentId, locale, status }) {
-          const document = await strapi
-            .documents(uid)
-            .findOne({ documentId, locale, status });
-          const pathname = getPreviewPathname(uid, { locale, document });
-
-          // Disable preview if the pathname is not found
-          if (!pathname) {
-            return null;
-          }
-
-          // Use Next.js draft mode
-          const urlSearchParams = new URLSearchParams({
-            url: `/${locale ?? 'en'}${pathname}`,
-            secret: previewSecret,
-            status,
-          });
-
-          return `${clientUrl}/api/preview?${urlSearchParams}`;
-        },
-      },
+      enabled: false,
     },
   };
 };
